@@ -18,6 +18,6 @@ export class TodoTable1731043286846 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE "todo"`);
+    await queryRunner.query(`DROP TABLE todo`);
   }
 }

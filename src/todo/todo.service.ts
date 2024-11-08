@@ -19,7 +19,7 @@ export class TodoService {
 
     const todoRecord = await this.todoRepository.save({
       ...todo,
-      user_id: user.user.id,
+      user_id: user.id,
     });
 
     const data = {
@@ -34,7 +34,7 @@ export class TodoService {
     const user = await this.checkAuth(token);
 
     const todo = await this.todoRepository.find({
-      where: { user_id: user.user.id },
+      where: { user_id: user.id },
     });
 
     const data = {
@@ -49,7 +49,7 @@ export class TodoService {
     const user = await this.checkAuth(token);
 
     const todoRecord = await this.todoRepository.findOne({
-      where: { id, user_id: user.user.id },
+      where: { id, user_id: user.id },
     });
 
     if (!todoRecord) {
@@ -61,7 +61,7 @@ export class TodoService {
     });
 
     const updatedTodoRecord = await this.todoRepository.findOne({
-      where: { id, user_id: user.user.id },
+      where: { id, user_id: user.id },
     });
 
     const data = {
@@ -77,7 +77,7 @@ export class TodoService {
     const user = await this.checkAuth(token);
 
     const todoRecord = await this.todoRepository.findOne({
-      where: { id, user_id: user.user.id },
+      where: { id, user_id: user.id },
     });
 
     if (!todoRecord) {
@@ -96,8 +96,8 @@ export class TodoService {
 
   // Check Auth
   async checkAuth(token) {
-    const user = await this.userService.findUser(token);
-    if (!user.user) {
+    const user = await this.userService.checkAuth(token);
+    if (!user) {
       throw new UnauthorizedException(
         'Invalid token || Session expired || Unauthorized',
       );

@@ -64,7 +64,7 @@ export class UserService {
     return data;
   }
 
-  async checkAuth(@BearerToken() token: string | undefined) {
+  async checkAuth(token: string | undefined) {
     let decoded: any;
     try {
       decoded = this.jwtService.verify(token);
@@ -77,8 +77,10 @@ export class UserService {
       throw new UnauthorizedException('Invalid token');
     }
     const user = await this.userRepository.findOne({
-      where: { email: decoded.email },
+      where: { id: decoded.sub },
     });
+    console.log(user);
+
     if (!user) {
       throw new UnauthorizedException('Invalid credentials || Session expired');
     }
