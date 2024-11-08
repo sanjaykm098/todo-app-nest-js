@@ -6,13 +6,9 @@ export class CreateTodoDto {
   title: string;
 
   @IsBoolean()
-  completed: boolean;
+  status: boolean;
 
   @IsString()
   @IsNotEmpty()
   description: string;
-
-  @IsString()
-  @IsNotEmpty()
-  user_id: number;
 }

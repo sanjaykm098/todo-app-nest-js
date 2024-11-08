@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource, typeormConfig } from './config/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './config/constants';
 import { TodoModule } from './todo/todo.module';
 
 @Module({
@@ -15,7 +14,7 @@ import { TodoModule } from './todo/todo.module';
     }),
     JwtModule.register({
       global: true,
-      secret: jwtConstants.secret,
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
     TypeOrmModule.forRootAsync({
