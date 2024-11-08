@@ -1,10 +1,30 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppDataSource, typeormConfig } from './config/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './config/constants';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeormConfig], // Use the configuration function
+    }),
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1h' },
+    }),
+    TypeOrmModule.forRootAsync({
+      useFactory: async () => AppDataSource.options, // Use options from AppDataSource
+    }),
+    UserModule,
+    TodoModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
